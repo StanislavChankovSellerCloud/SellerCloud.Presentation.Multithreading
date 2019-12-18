@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\src\SellerCloud.AspNet.Service\SellerCloud.DotNetFramework.Service.csproj" />
+    <ProjectReference Include="..\src\SellerCloud.NetStandard\SellerCloud.NetStandard.csproj" />
+  </ItemGroup>
+
+</Project>
