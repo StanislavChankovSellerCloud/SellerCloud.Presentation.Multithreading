@@ -1,4 +1,9 @@
-﻿using System.Threading.Tasks;
+﻿using SellerCloud.AspNetCore.Api;
+using SellerCloud.Presentation.Multithreading.Tests.Extensions;
+using System;
+using System.Net;
+using System.Threading;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace SellerCloud.Presentation.Multithreading.Tests
@@ -15,13 +20,12 @@ namespace SellerCloud.Presentation.Multithreading.Tests
         [Fact]
         public async Task GetSynchronizationContext_NoSynchronizationContext()
         {
-            var response = await _fixture.Client.GetAsync(VALUES_CONTROLLER);
+            Tuple<HttpStatusCode, RestResult<SynchronizationContext>> result = await _fixture.Client
+                .GetAsync(VALUES_CONTROLLER)
+                .ContinueWithResultAsync<RestResult<SynchronizationContext>>();
 
-            response.EnsureSuccessStatusCode();
-
-            string result =  await response.Content.ReadAsStringAsync();
-
-            Assert.Equal(string.Empty, result);
+            Assert.Equal(HttpStatusCode.OK, result.Item1);
+            Assert.Null(result.Item2.Value);
         }
 
         [Theory]
@@ -29,13 +33,12 @@ namespace SellerCloud.Presentation.Multithreading.Tests
         [InlineData(true)]
         public async Task NetStandard_Asynchronous_Successful(bool configureAwait)
         {
-            var response = await _fixture.Client.GetAsync($"{VALUES_CONTROLLER}/net-standard/async?configAwait={configureAwait}");
+            Tuple<HttpStatusCode, RestResult<object>> result = await _fixture.Client
+                .GetAsync($"{VALUES_CONTROLLER}/net-standard/async?configAwait={configureAwait}")
+                .ContinueWithResultAsync<RestResult<object>>();
 
-            response.EnsureSuccessStatusCode();
-
-            string result = await response.Content.ReadAsStringAsync();
-
-            Assert.Equal($"NetStandard-Asynchronous-ConfigureAwait={configureAwait}", result);
+            Assert.Equal(HttpStatusCode.OK, result.Item1);
+            Assert.Equal($"NetStandard-Asynchronous-ConfigureAwait={configureAwait}", result.Item2.Message);
         }
 
         [Theory]
@@ -43,13 +46,12 @@ namespace SellerCloud.Presentation.Multithreading.Tests
         [InlineData(true)]
         public async Task NetStandard_Synchronous_Successful(bool configureAwait)
         {
-            var response = await _fixture.Client.GetAsync($"{VALUES_CONTROLLER}/net-standard/sync?configAwait={configureAwait}");
+            Tuple<HttpStatusCode, RestResult<object>> result = await _fixture.Client
+                .GetAsync($"{VALUES_CONTROLLER}/net-standard/sync?configAwait={configureAwait}")
+                .ContinueWithResultAsync<RestResult<object>>();
 
-            response.EnsureSuccessStatusCode();
-
-            string result = await response.Content.ReadAsStringAsync();
-
-            Assert.Equal($"NetStandard-Synchronous-ConfigureAwait={configureAwait}", result);
+            Assert.Equal(HttpStatusCode.OK, result.Item1);
+            Assert.Equal($"NetStandard-Synchronous-ConfigureAwait={configureAwait}", result.Item2.Message);
         }
 
         [Theory]
@@ -57,13 +59,12 @@ namespace SellerCloud.Presentation.Multithreading.Tests
         [InlineData(true)]
         public async Task Fullframework_Synchronous_Successful(bool configureAwait)
         {
-            var response = await _fixture.Client.GetAsync($"{VALUES_CONTROLLER}/full-framework/sync?configAwait={configureAwait}");
+            Tuple<HttpStatusCode, RestResult<object>> result = await _fixture.Client
+                .GetAsync($"{VALUES_CONTROLLER}/full-framework/sync?configAwait={configureAwait}")
+                .ContinueWithResultAsync<RestResult<object>>();
 
-            response.EnsureSuccessStatusCode();
-
-            string result = await response.Content.ReadAsStringAsync();
-
-            Assert.Equal($"FullFramework-Synchronous-ConfigureAwait={configureAwait}", result);
+            Assert.Equal(HttpStatusCode.OK, result.Item1);
+            Assert.Equal($"FullFramework-Synchronous-ConfigureAwait={configureAwait}", result.Item2.Message);
         }
 
         [Theory]
@@ -71,13 +72,11 @@ namespace SellerCloud.Presentation.Multithreading.Tests
         [InlineData(true)]
         public async Task Fullframework_Asynchronous_Successful(bool configureAwait)
         {
-            var response = await _fixture.Client.GetAsync($"{VALUES_CONTROLLER}/full-framework/async?configAwait={configureAwait}");
+            HttpStatusCode response = await _fixture.Client
+                .GetAsync($"{VALUES_CONTROLLER}/full-framework/async?configAwait={configureAwait}")
+                .ContinueWithResultAsync();
 
-            response.EnsureSuccessStatusCode();
-
-            string result = await response.Content.ReadAsStringAsync();
-
-            Assert.Equal($"FullFramework-Asynchronous-ConfigureAwait={configureAwait}", result);
+            Assert.Equal(HttpStatusCode.OK, response);
         }
     }
 }

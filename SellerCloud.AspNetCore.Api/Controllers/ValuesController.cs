@@ -25,7 +25,12 @@ namespace SellerCloud.AspNetCore.Api.Controllers
             // What's the value?
             var context = SynchronizationContext.Current;
 
-            return Ok(context);
+            var result = new RestResult<SynchronizationContext>()
+            {
+                Value = context,
+            };
+
+            return Ok(result);
         }
 
         [HttpGet("net-standard/async")]
@@ -33,7 +38,11 @@ namespace SellerCloud.AspNetCore.Api.Controllers
         {
             await _netStandardService.ExecuteNothingAsync(configAwait);
 
-            return Ok($"NetStandard-Asynchronous-ConfigureAwait={configAwait}");
+            string message = $"NetStandard-Asynchronous-ConfigureAwait={configAwait}";
+
+            var result = RestResult<object>.Empty(message);
+
+            return Ok(result);
         }
 
         [HttpGet("net-standard/sync")]
@@ -41,7 +50,11 @@ namespace SellerCloud.AspNetCore.Api.Controllers
         {
             _netStandardService.ExecuteNothingAsync(configAwait).GetAwaiter().GetResult();
 
-            return Ok($"NetStandard-Synchronous-ConfigureAwait={configAwait}");
+            string message = $"NetStandard-Synchronous-ConfigureAwait={configAwait}";
+
+            var result = RestResult<object>.Empty(message);
+
+            return Ok(result);
         }
 
         [HttpGet("full-framework/async")]
@@ -49,7 +62,11 @@ namespace SellerCloud.AspNetCore.Api.Controllers
         {
             await _dotNetFrameworkService.ExecuteNothingAsync(configAwait);
 
-            return Ok($"FullFramework-Asynchronous-ConfigureAwait={configAwait}");
+            string message = $"FullFramework-Asynchronous-ConfigureAwait={configAwait}";
+
+            var result = RestResult<object>.Empty(message);
+
+            return Ok(result);
         }
 
         [HttpGet("full-framework/sync")]
@@ -57,7 +74,11 @@ namespace SellerCloud.AspNetCore.Api.Controllers
         {
             _dotNetFrameworkService.ExecuteNothingAsync(configAwait).GetAwaiter().GetResult();
 
-            return Ok($"FullFramework-Synchronous-ConfigureAwait={configAwait}");
+            string message = $"FullFramework-Synchronous-ConfigureAwait={configAwait}";
+
+            var result = RestResult<object>.Empty(message);
+
+            return Ok(result);
         }
     }
 }
