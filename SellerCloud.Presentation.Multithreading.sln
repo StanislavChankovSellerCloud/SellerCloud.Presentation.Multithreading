@@ -13,7 +13,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{6538906A-E11
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8F9E531F-F696-4431-A0BD-D059D6715DAB}"
 	ProjectSection(SolutionItems) = preProject
-		Solution Items\readme.md = Solution Items\readme.md
+		readme.md = readme.md
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SellerCloud.AspNetCore.Api", "SellerCloud.AspNetCore.Api\SellerCloud.AspNetCore.Api.csproj", "{9B0D84CD-733F-48EF-8B23-FC4D41CBB711}"
