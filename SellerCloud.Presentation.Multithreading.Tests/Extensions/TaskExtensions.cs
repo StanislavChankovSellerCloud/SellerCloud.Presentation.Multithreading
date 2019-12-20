@@ -12,16 +12,7 @@ namespace SellerCloud.Presentation.Multithreading.Tests.Extensions
         /// Continues the <see cref="Task"/> and returning the <see cref="HttpStatusCode"/> .
         /// </summary>
         public static Task<HttpStatusCode> ContinueWithResultAsync(this Task<HttpResponseMessage> task)
-        {
-            var taskCompletionSource = new TaskCompletionSource<HttpStatusCode>();
-
-            task.ContinueWith(continuation =>
-            {
-                taskCompletionSource.SetResult(continuation.Result.StatusCode);
-            }, TaskScheduler.Default);
-
-            return taskCompletionSource.Task;
-        }
+            => task.ContinueWith(continuation => continuation.Result.StatusCode, TaskScheduler.Default);
 
         public static Task<Tuple<HttpStatusCode, TResult>> ContinueWithResultAsync<TResult>(this Task<HttpResponseMessage> task)
         {
